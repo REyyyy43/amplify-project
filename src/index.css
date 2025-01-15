@@ -1,167 +1,151 @@
-/* Estilos generales */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+/* Dashboard container */
+.dashboard-container {
     display: flex;
+    background-color: #f7fafc;
   }
   
-  .container {
-    display: flex;
-    width: 100%;
-    height: 100vh;
-  }
-  
-  /* Sidebar */
+  /* Sidebar styles */
   .sidebar {
     width: 250px;
-    background-color: #2f3b52;
+    background-color: #2d3748;
     color: white;
-    padding: 20px;
+    min-height: 100vh;
   }
   
-  .nav {
-    display: flex;
-    flex-direction: column;
+  .sidebar-nav {
+    padding: 1rem;
   }
   
-  .nav-item {
+  .sidebar-item {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: #edf2f7;
     text-decoration: none;
-    color: white;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 5px;
+    border-radius: 4px;
+    margin-bottom: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s;
   }
   
-  .nav-item:hover {
-    background-color: #4c5a72;
+  .sidebar-item:hover {
+    background-color: #4a5568;
   }
   
-  .sign-out {
-    background-color: #d9534f;
+  .sign-out-btn {
+    background-color: #e53e3e;
     color: white;
-    padding: 10px;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
     border: none;
-    width: 100%;
-    cursor: pointer;
-    margin-top: 20px;
-    border-radius: 5px;
   }
   
-  /* Main Content */
+  .sign-out-btn:hover {
+    background-color: #c53030;
+    border: none;
+  }
+  
+  /* Main content styles */
   .main-content {
-    flex: 1;
-    padding: 20px;
+    flex-grow: 1;
   }
   
   .header {
+    background-color: white;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
   
   .header-title {
-    font-size: 24px;
-    color: #333;
-  }
-  
-  .sign-out-button {
-    background-color: #d9534f;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #3182ce;
   }
   
   .main-section {
-    margin-top: 20px;
+    padding: 2rem;
   }
   
   .section-title {
-    font-size: 22px;
-    color: #333;
-    margin-bottom: 10px;
-  }
-  
-  /* User Management */
-  .user-management {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .add-user-button {
-    background-color: #5bc0de;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 15px;
-  }
-  
-  .user-list-title {
-    font-size: 18px;
-    color: #333;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2d3748;
   }
   
   .user-list {
-    list-style: none;
-    padding-left: 0;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .add-user-btn {
+    background-color: #3182ce;
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    border: none;
+  }
+  
+  .add-user-btn:hover {
+    background-color: #2b6cb0;
+    border: none;
+  }
+  
+  .user-list-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-top: 1rem;
+  }
+  
+  .user-list-items {
+    margin-top: 1rem;
   }
   
   .user-item {
-    background-color: #fff;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
   }
   
-  .user-name {
-    font-weight: bold;
-    color: #333;
+  .user-info {
+    font-size: 1rem;
   }
   
-  .user-email {
-    color: #777;
+  .user-actions {
+    display: flex;
+    gap: 0.5rem;
   }
   
-  .user-actions button {
-    background-color: #f0ad4e;
+  .edit-btn {
+    background-color: #07108b;
     color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
     cursor: pointer;
+    border: none;
   }
   
-  .user-actions button:hover {
-    background-color: #ec971f;
+  .edit-btn:hover {
+    background-color: #07024d;
+    border: none;
   }
   
-  /* Modal */
+  /* Modal styles */
   .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
@@ -170,59 +154,67 @@
   
   .modal {
     background-color: white;
-    padding: 20px;
+    padding: 2rem;
     border-radius: 8px;
     width: 400px;
-    max-width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
   
   .modal-title {
-    font-size: 22px;
-    margin-bottom: 20px;
-    color: #333;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
   }
   
-  .form-field {
-    margin-bottom: 15px;
+  .form-group {
+    margin-bottom: 1rem;
   }
   
-  .form-label {
-    display: block;
-    margin-bottom: 5px;
-    color: #333;
+  .label {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
   }
   
-  .form-input {
+  .input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font-size: 1rem;
   }
   
   .form-actions {
     display: flex;
     justify-content: space-between;
+    gap: 1rem;
   }
   
-  .cancel-button {
-    background-color: #d9534f;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
+  .cancel-btn, .submit-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
     cursor: pointer;
   }
   
-  .submit-button {
-    background-color: #5bc0de;
+  .cancel-btn {
+    background-color: #e53e3e;
     color: white;
-    padding: 10px 20px;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
   }
   
-  .cancel-button:hover, .submit-button:hover {
-    opacity: 0.8;
+  .cancel-btn:hover {
+    background-color: #c53030;
+    border: none;
+  }
+  
+  .submit-btn {
+    background-color: #3182ce;
+    color: white;
+    border: none;
+  }
+  
+  .submit-btn:hover {
+    background-color: #2b6cb0;
+    border: none;
   }
   

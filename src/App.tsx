@@ -17,16 +17,17 @@ const TenantAdminDashboard = () => {
   const [users, setUsers] = useState<User[]>([]); // Local state for users (mapped from Todo table)
   const [formData, setFormData] = useState<User>({ id: '', name: '', email: '' }); // Form for adding/editing users
   const [showModal, setShowModal] = useState(false); // State to toggle Add/Edit User modal
-  const [activeView, setActiveView] = useState<string>('overview'); // State to handle active view (initially set to 'overview')
+  const [currentView, setCurrentView] = useState("dashboard"); // New state to track the current view
 
   // Fetch users (mapped from Todo table) on component mount
   useEffect(() => {
     const subscription = client.models.User.observeQuery().subscribe({
       next: (data) => {
+        // Map the Todo items to User objects
         const mappedUsers = data.items
-          .filter((item) => item.content)
+          .filter((item) => item.content) // Filtrar elementos con contenido no nulo
           .map((item) => {
-            const [name = 'Unknown', email = 'Unknown'] = item.content!.split('|');
+            const [name = 'Unknown', email = 'Unknown'] = item.content!.split('|'); // Proporcionar valores predeterminados
             return { id: item.id, name, email };
           });
         setUsers(mappedUsers);
@@ -42,49 +43,35 @@ const TenantAdminDashboard = () => {
       return;
     }
 
-    const content = `${formData.name}|${formData.email}`;
+    // Create a new Todo item representing a user
+    const content = `${formData.name}|${formData.email}`; // Use a delimiter to store both name and email in content
     if (formData.id) {
+      // Update existing user
       await client.models.User.update({ id: formData.id, content });
     } else {
+      // Create new user
       await client.models.User.create({ content });
     }
 
-    setFormData({ id: '', name: '', email: '' });
+    setFormData({ id: '', name: '', email: '' }); // Reset the form
     setShowModal(false);
   };
 
+  // Handle navigation
+  const handleNavigation = (view: string) => {
+    setCurrentView(view); // Change the current view based on the clicked link
+  };
+
   return (
-    <div className="flex">
+    <div className="dashboard-container">
       {/* Sidebar */}
       <aside className="sidebar">
-        <nav className="nav">
-          <a
-            className="nav-item"
-            onClick={() => setActiveView('overview')} // Set the active view to 'overview'
-          >
-            Dashboard Overview
-          </a>
-          <a
-            onClick={() => setActiveView('rentals')} // Set the active view to 'rentals'
-            className="nav-item"
-          >
-            Rentals
-          </a>
-          <a
-            onClick={() => setActiveView('maintenance')} // Set the active view to 'maintenance'
-            className="nav-item"
-          >
-            Maintenance Requests
-          </a>
-          <a
-            onClick={() => setActiveView('reports')} // Set the active view to 'reports'
-            className="nav-item"
-          >
-            Reports & Analytics
-          </a>
-          <button onClick={signOut} className="sign-out">
-            Sign Out
-          </button>
+        <nav className="sidebar-nav">
+          <a onClick={() => handleNavigation("dashboard")} className="sidebar-item">Dashboard Overview</a>
+          <a onClick={() => handleNavigation("rentals")} className="sidebar-item">Rentals</a>
+          <a onClick={() => handleNavigation("maintenance")} className="sidebar-item">Maintenance Requests</a>
+          <a onClick={() => handleNavigation("reports")} className="sidebar-item">Reports & Analytics</a>
+          <button onClick={signOut} className="sidebar-item sign-out-btn">Sign Out</button>
         </nav>
       </aside>
 
@@ -93,69 +80,47 @@ const TenantAdminDashboard = () => {
         {/* Header */}
         <header className="header">
           <h1 className="header-title">Tenant Admin Dashboard</h1>
-          <button onClick={signOut} className="sign-out-button">
-            Sign Out
-          </button>
+          <button onClick={signOut} className="sign-out-btn">Sign Out</button>
         </header>
 
         {/* Main Content */}
         <main className="main-section">
-          {/* Conditionally render the active view */}
-          {activeView === 'overview' && (
-            <section>
-              <h2 className="section-title">Dashboard Overview</h2>
-              {/* Add your overview content here */}
+          {/* Render different components based on the current view */}
+          {currentView === "dashboard" && (
+            <section className="user-management">
+              <h2 className="section-title">User Management</h2>
+              <div className="user-list">
+                <button onClick={() => setShowModal(true)} className="add-user-btn">Add User</button>
+                <h3 className="user-list-title">Registered Users</h3>
+                <ul className="user-list-items">
+                  {users.map((user) => (
+                    <li key={user.id} className="user-item">
+                      <div className="user-info">
+                        <p className="user-name">{user.name}</p>
+                        <p className="user-email">{user.email}</p>
+                      </div>
+                      <div className="user-actions">
+                        <button
+                          onClick={() => {
+                            setFormData(user);
+                            setShowModal(true);
+                          }}
+                          className="edit-btn"
+                        >
+                          Edit
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </section>
           )}
-          {activeView === 'rentals' && (
-            <section>
-              <h2 className="section-title">Rentals</h2>
-              {/* Add your rentals content here */}
-            </section>
-          )}
-          {activeView === 'maintenance' && (
-            <section>
-              <h2 className="section-title">Maintenance Requests</h2>
-              {/* Add your maintenance content here */}
-            </section>
-          )}
-          {activeView === 'reports' && (
-            <section>
-              <h2 className="section-title">Reports & Analytics</h2>
-              {/* Add your reports content here */}
-            </section>
-          )}
-          {/* User Management Section */}
-          <section>
-            <h2 className="section-title">User Management</h2>
-            <div className="user-management">
-              <button onClick={() => setShowModal(true)} className="add-user-button">
-                Add User
-              </button>
-              <h3 className="user-list-title">Registered Users</h3>
-              <ul className="user-list">
-                {users.map((user) => (
-                  <li key={user.id} className="user-item">
-                    <div>
-                      <p className="user-name">{user.name}</p>
-                      <p className="user-email">{user.email}</p>
-                    </div>
-                    <div className="user-actions">
-                      <button
-                        onClick={() => {
-                          setFormData(user);
-                          setShowModal(true);
-                        }}
-                        className="edit-button"
-                      >
-                        Edit
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
+
+          {/* Placeholder for other views */}
+          {currentView === "rentals" && <div>Rentals Content</div>}
+          {currentView === "maintenance" && <div>Maintenance Requests Content</div>}
+          {currentView === "reports" && <div>Reports & Analytics Content</div>}
         </main>
       </div>
 
@@ -170,31 +135,31 @@ const TenantAdminDashboard = () => {
                 handleAddUser();
               }}
             >
-              <div className="form-field">
-                <label className="form-label">Name</label>
+              <div className="form-group">
+                <label className="label">Name</label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="form-input"
+                  className="input"
                   required
                 />
               </div>
-              <div className="form-field">
-                <label className="form-label">Email</label>
+              <div className="form-group">
+                <label className="label">Email</label>
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="form-input"
+                  className="input"
                   required
                 />
               </div>
               <div className="form-actions">
-                <button type="button" onClick={() => setShowModal(false)} className="cancel-button">
+                <button type="button" onClick={() => setShowModal(false)} className="cancel-btn">
                   Cancel
                 </button>
-                <button type="submit" className="submit-button">
+                <button type="submit" className="submit-btn">
                   {formData.id ? 'Save Changes' : 'Add User'}
                 </button>
               </div>

@@ -4,6 +4,7 @@ import UsersView from './components/users/UsersView';
 import TaskView from './components/tasks/TaskView';
 import UnitsView from './components/units/UnitsView';
 import BuildingsView from './components/buildings/BuildingsView';
+import MaintenanceRequestsView from './components/maintenance/MaintenanceRequestsView';
 
 const TenantAdminDashboard = () => {
   const { signOut } = useAuthenticator();
@@ -54,6 +55,7 @@ const TenantAdminDashboard = () => {
           {currentView === "buildings" && <BuildingsView />}
           {currentView === "units" && <UnitsView />}
           {currentView === "task" && <TaskView />}
+          {currentView === "maintenance" && <MaintenanceRequestsView />}
         </main>
       </div>
     </div>

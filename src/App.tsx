@@ -7,7 +7,7 @@ import BuildingsView from './components/buildings/BuildingsView';
 import MaintenanceRequestsView from './components/maintenance/MaintenanceRequestsView';
 import MessagesView from './components/messages/MessagesView';
 import { User } from 'aws-cdk-lib/aws-iam';
-import DashboardOverview from './components/dashboard/DashboardOverview';
+import TenantDashboardOverview from './components/dashboard/TenantDashboardOverview';
 
 const TenantAdminDashboard = () => {
   const { signOut } = useAuthenticator();
@@ -45,7 +45,7 @@ const TenantAdminDashboard = () => {
 
         {/* Main Content */}
         <main className="main-section">
-          {currentView === "dashboard" && <DashboardOverview />}
+          {currentView === "dashboard" && <TenantDashboardOverview />}
           {currentView === "buildings" && <BuildingsView />}
           {currentView === "units" && <UnitsView />}
           {currentView === "users" && <UsersView />}

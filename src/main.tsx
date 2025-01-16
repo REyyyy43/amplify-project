@@ -5,7 +5,7 @@ import { Authenticator } from '@aws-amplify/ui-react';
 
 import { Amplify } from 'aws-amplify';
 import App from './App.tsx';
-import outputs from '../amplify_outputs (1).json';
+import outputs from '../amplify_outputs.json';
 import './index.css';
 
 import '@aws-amplify/ui-react/styles.css';

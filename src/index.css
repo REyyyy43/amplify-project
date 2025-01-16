@@ -337,3 +337,40 @@
     background-color: #c53030;
   }
   
+  /* Building Management Overview */
+.building-overview-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #4a5568;
+  }
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 16px;
+  }
+  
+  .building-card {
+    padding: 16px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .card-title {
+    color: #6b7280;
+    font-size: 1rem;
+  }
+  
+  .card-input {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #4a5568;
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+  }
+  

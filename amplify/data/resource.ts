@@ -1,27 +1,30 @@
-import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
-
+import { a, defineData, type ClientSchema } from '@aws-amplify/backend';
 
 const schema = a.schema({
   User: a
     .model({
       content: a.string().required(),              
       role: a.enum(['tenant', 'taxi', 'maintenance', 'security']), // Rol del usuario      
-    
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
-  Building: a
-    .model({
-      tenantId: a.id().required(),
-      name: a.string().required(),
-      address: a.string().required(),
-      towerCount: a.integer().required(),
-      floorsPerTower: a.integer().required(),
-      unitsPerFloor: a.integer().required(),
-      units: a.hasMany('Unit', 'buildingId'),
-      users: a.hasMany('User', 'assignedBuildingId'), // Relación correcta con 'assignedBuildingId'
-    })
-    .authorization((allow) => [allow.publicApiKey()]),
+     Building: a
+     .model({
+       content: a.string().required(),                    
+     })
+     .authorization((allow) => [allow.publicApiKey()]),
+
+     Task: a
+     .model({
+       content: a.string().required(),                    
+     })
+     .authorization((allow) => [allow.publicApiKey()]),
+
+     Unit: a
+     .model({
+       content: a.string().required(),                    
+     })
+     .authorization((allow) => [allow.publicApiKey()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -35,6 +38,7 @@ export const data = defineData({
     },
   },
 });
+
 /*== STEP 2 ===============================================================
 Go to your frontend source code. From your client-side code, generate a
 Data client to make CRUDL requests to your table. (THIS SNIPPET WILL ONLY

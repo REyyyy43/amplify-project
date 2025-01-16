@@ -3,6 +3,7 @@ import { useState } from 'react';
 import UsersView from './components/users/UsersView';
 import TaskView from './components/tasks/TaskView';
 import UnitsView from './components/units/UnitsView';
+import BuildingsView from './components/buildings/BuildingsView';
 
 const TenantAdminDashboard = () => {
   const { signOut } = useAuthenticator();
@@ -50,8 +51,9 @@ const TenantAdminDashboard = () => {
           )}
 
           {currentView === "users" && <UsersView />}
-          {currentView === "task" && <TaskView />}
+          {currentView === "buildings" && <BuildingsView />}
           {currentView === "units" && <UnitsView />}
+          {currentView === "task" && <TaskView />}
         </main>
       </div>
     </div>

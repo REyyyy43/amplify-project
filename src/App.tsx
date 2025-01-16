@@ -151,6 +151,13 @@ const TenantAdminDashboard = () => {
         <main className="main-section">
           {/* Render different components based on the current view */}
           {currentView === "dashboard" && (
+            <section className="dashboard-overview">
+              <h2 className="section-title">Dashboard Overview</h2>
+              {/* Add dashboard overview content here */}
+            </section>
+          )}
+
+          {currentView === "users" && (
             <section className="user-management">
               <h2 className="section-title">User Management</h2>
               <div className="user-list">

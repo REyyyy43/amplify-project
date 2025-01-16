@@ -127,7 +127,6 @@ const TenantAdminDashboard = () => {
           <a onClick={() => handleNavigation("notifications")} className="sidebar-item">Notifications</a>
           <a onClick={() => handleNavigation("maintenance")} className="sidebar-item">Maintenance Requests</a>
           <a onClick={() => handleNavigation("reports")} className="sidebar-item">Reports & Analytics</a>
-          <button onClick={signOut} className="sidebar-item sign-out-btn">Sign Out</button>
         </nav>
       </aside>
 

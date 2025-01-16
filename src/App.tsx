@@ -2,6 +2,7 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useState } from 'react';
 import UsersView from './components/users/UsersView';
 import TaskView from './components/tasks/TaskView';
+import UnitsView from './components/units/UnitsView';
 
 const TenantAdminDashboard = () => {
   const { signOut } = useAuthenticator();
@@ -50,6 +51,7 @@ const TenantAdminDashboard = () => {
 
           {currentView === "users" && <UsersView />}
           {currentView === "task" && <TaskView />}
+          {currentView === "units" && <UnitsView />}
         </main>
       </div>
     </div>

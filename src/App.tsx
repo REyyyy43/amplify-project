@@ -68,7 +68,12 @@ const TenantAdminDashboard = () => {
       <aside className="sidebar">
         <nav className="sidebar-nav">
           <a onClick={() => handleNavigation("dashboard")} className="sidebar-item">Dashboard Overview</a>
-          <a onClick={() => handleNavigation("rentals")} className="sidebar-item">Rentals</a>
+          <a onClick={() => handleNavigation("buildings")} className="sidebar-item">Buildings</a>
+          <a onClick={() => handleNavigation("users")} className="sidebar-item">Users</a>
+          <a onClick={() => handleNavigation("units")} className="sidebar-item">Units</a>
+          <a onClick={() => handleNavigation("taks")} className="sidebar-item">Taks</a>
+          <a onClick={() => handleNavigation("messages")} className="sidebar-item">Messages</a>
+          <a onClick={() => handleNavigation("notifications")} className="sidebar-item">Notifications</a>
           <a onClick={() => handleNavigation("maintenance")} className="sidebar-item">Maintenance Requests</a>
           <a onClick={() => handleNavigation("reports")} className="sidebar-item">Reports & Analytics</a>
           <button onClick={signOut} className="sidebar-item sign-out-btn">Sign Out</button>

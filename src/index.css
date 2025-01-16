@@ -95,7 +95,37 @@
     background-color: #2b6cb0;
     border: none;
   }
+
+  .add-building-btn {
+    background-color: #3182ce;
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    border: none;
+  }
+
+  .save-btn {
+    background-color: #3182ce;
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 1.4rem;
+    border: none;
+  }
   
+  .cancel-btn {
+    background-color: #3182ce;
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    border: none;
+  }
+
   .user-list-title {
     font-size: 1.25rem;
     font-weight: bold;
@@ -140,7 +170,7 @@
   }
   
   /* Modal styles */
-  .modal-overlay {
+.modal-overlay, .modal-overlay2 {
     position: fixed;
     top: 0;
     left: 0;
@@ -184,37 +214,126 @@
     font-size: 1rem;
   }
   
-  .form-actions {
+  .form-actions, .modal-actions {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
   }
   
-  .cancel-btn, .submit-btn {
+  .form-actions, .modal-actions button {
     padding: 0.75rem 1.5rem;
     border-radius: 4px;
     cursor: pointer;
+    width: 100%; /* Ensures all buttons have equal width */
+    max-width: 140px; /* Ensures buttons do not grow too large */
+    display: flex;
+    align-items: flex-start;
+    
+  }
+
+  .modal-actions {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  
+  .cancel-btn, .btn-delete, .btn-submit, .btn-delete2 {
+    background-color: #e53e3e;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
   }
   
   .cancel-btn {
     background-color: #e53e3e;
-    color: white;
-    border: none;
   }
   
   .cancel-btn:hover {
     background-color: #c53030;
-    border: none;
   }
   
-  .submit-btn {
+  .btn-delete {
+    background-color: #e53e3e;
+  }
+  
+  .btn-delete:hover {
+    background-color: #c53030;
+  }
+  
+  .btn-delete2 {
+    background-color: #3e4fe5;
+  }
+  
+  .btn-delete2:hover {
+    background-color: #3058c5;
+  }
+
+  .btn-submit {
     background-color: #3182ce;
     color: white;
     border: none;
   }
   
-  .submit-btn:hover {
+  .btn-submit:hover {
     background-color: #2b6cb0;
+  }
+
+  /* General Navigation Bar Styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2d3748; /* Dark gray background */
+    padding: 1rem 2rem;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header-title-search {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .header-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .search-input {
+    padding: 0.5rem 1rem;
     border: none;
+    border-radius: 20px;
+    font-size: 1rem;
+    width: 300px;
+    outline: none;
+    background-color: #edf2f7; /* Light gray background */
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .search-input:focus {
+    box-shadow: 0 0 5px rgba(66, 153, 225, 0.5); /* Blue focus effect */
+  }
+  
+  .search-input::placeholder {
+    color: #a0aec0; /* Subtle placeholder color */
+  }
+  
+  .sign-out-btn {
+    background-color: #e53e3e;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sign-out-btn:hover {
+    background-color: #c53030;
   }
   

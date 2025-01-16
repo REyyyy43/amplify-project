@@ -80,8 +80,7 @@ const TenantAdminDashboard = () => {
     }
 
     // Create a new Todo item representing a user
-    const content = ${formData.name}|${formData.email}|${formData.phone}|${formData.role}; // Use a delimiter to store both name and email in content
-
+    const content = `${formData.name}|${formData.email}|${formData.phone}|${formData.role}`; // Use a delimiter to store both name and email in content
     if (formData.id) {
       // Update existing user
       await client.models.User.update({ id: formData.id, content });

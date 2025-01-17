@@ -32,6 +32,7 @@ interface Unit {
 }
 
 interface Building {
+  id?: string;
   buildingName: string;
   address: string;
   towerCount: string;
@@ -41,18 +42,17 @@ interface Building {
 
 const TenantAdminDashboard = () => {
   const { signOut } = useAuthenticator(); // For handling user sign-out
-  const [users, setUsers] = useState<User[]>([]); // Local state for users (mapped from Todo table)
-  const [formData, setFormData] = useState<User>({ id: '', name: '', email: '', phone: '', role: 'tenant' }); // Form for adding/editing users
-  const [showModal, setShowModal] = useState(false); // State to toggle Add/Edit User modal
-  const [currentView, setCurrentView] = useState("dashboard"); // New state to track the current view
-  const [searchQuery, setSearchQuery] = useState(''); // State for search query
-  const [showConfirmDelete, setShowConfirmDelete] = useState(false); // State for confirm delete modal
+  const [users, setUsers] = useState<User[]>([]);
+  const [formData, setFormData] = useState<User>({ id: '', name: '', email: '', phone: '', role: 'tenant' });
+  const [showModal, setShowModal] = useState(false);
+  const [currentView, setCurrentView] = useState("dashboard");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [taskData, setTaskData] = useState<Task>({ taskName: '', assignedTo: '', deadline: '', priority: 'normal', status: 'pending' });
-  const [buildingData, setBuildingData] = useState({ buildingName: '', Address: '', towerCount: '', floorsPerTower: '', unitPerFloors: '' });
+  const [buildingData, setBuildingData] = useState<Building>({ buildingName: '', address: '', towerCount: '', floorsPerTower: '', unitPerFloors: '' });
   const [unitData, setUnitData] = useState<Unit>({ unitNumber: '', floor: '', status: 'available', buildingId: '' });
 
-
-  // Fetch users (mapped from Todo table) on component mount
+  // Fetch users on component mount
   useEffect(() => {
     const subscription = client.models.User.observeQuery().subscribe({
       next: (data) => {
@@ -82,48 +82,33 @@ const TenantAdminDashboard = () => {
   });
 
   // Handle Task Submission
-const handleTaskSubmit = async () => {
-  // Validación de campos obligatorios
-  if (!taskData.taskName.trim() || !taskData.assignedTo.trim()) {
-    alert('Please fill in all fields.');
-    return;
-  }
-
-  // Formatear la información como string delimitado
-  const Todo = `${taskData.taskName}|${taskData.assignedTo}|${taskData.deadline}|${taskData.priority}|${taskData.status}`;
-
-  try {
-    if (taskData.id) {
-      // Actualizar tarea existente
-      await client.models.Task.update({
-        id: taskData.id,
-        content: Todo, // Usar el nombre correcto para el campo
-      });
-    } else {
-      // Crear nueva tarea
-      await client.models.Task.create({
-        content: Todo, // Usar el nombre correcto para el campo
-      });
+  const handleTaskSubmit = async () => {
+    if (!taskData.taskName.trim() || !taskData.assignedTo.trim()) {
+      alert('Please fill in all fields.');
+      return;
     }
 
-    // Mensaje de éxito
-    console.log('Task Submitted:', taskData);
-    alert('Task successfully submitted!');
+    const content = `${taskData.taskName}|${taskData.assignedTo}|${taskData.deadline}|${taskData.priority}|${taskData.status}`;
 
-    // Restablecer el formulario
-    setTaskData({
-      taskName: '',
-      assignedTo: '',
-      deadline: '',
-      priority: 'normal',
-      status: 'pending', // Resetear ID
-    });
-  } catch (error) {
-    console.error('Error submitting task:', error);
-    alert('There was an error submitting the task. Please try again.');
-  }
-};
-  // Handle task field change
+    try {
+      if (taskData.id) {
+        await client.models.Task.update({
+          id: taskData.id,
+          content,
+        });
+      } else {
+        await client.models.Task.create({
+          content,
+        });
+      }
+      alert('Task successfully submitted!');
+      setTaskData({ taskName: '', assignedTo: '', deadline: '', priority: 'normal', status: 'pending' });
+    } catch (error) {
+      console.error('Error submitting task:', error);
+      alert('There was an error submitting the task.');
+    }
+  };
+
   const handleTaskFieldChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setTaskData(prevState => ({
@@ -132,38 +117,70 @@ const handleTaskSubmit = async () => {
     }));
   };
 
- // Handle Task Submission
- const handleUnitSubmit = () => {
-  if (!unitData.unitNumber.trim() || !unitData.floor.trim()) {
-    alert('Please fill in all fields.');
-    return;
-  }
-  console.log('Unit Submitted:', unitData); // Log task data for now
-  setUnitData({ unitNumber: '', floor: '', status: 'available', buildingId: '' }); // Reset task form
-};
-
-// Handle task field change
-const handleUnitFieldChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-  const { name, value } = e.target;
-  setBuildingData(prevState => ({
-    ...prevState,
-    [name]: value,
-  }));
-};
-
-  // Handle Task Submission
-  const handleBuildingSubmit = () => {
-    if (!buildingData.buildingName.trim() || !buildingData.Address.trim()) {
+  // Handle Unit Submission
+  const handleUnitSubmit = async () => {
+    if (!unitData.unitNumber.trim() || !unitData.floor.trim()) {
       alert('Please fill in all fields.');
       return;
     }
-   
-    setBuildingData({ buildingName: '', Address: '', towerCount: '', floorsPerTower: '', unitPerFloors: '' }); // Reset task form
-    console.log('Building Submitted:', buildingData); // Log task data for now
-    // setBuildingData({ buildingName: '', Address: '', towerCount: '', floorsPerTower: '', unitPerFloors: '' }); // Reset task form
+
+    const content = `${unitData.unitNumber}|${unitData.floor}|${unitData.status}|${unitData.buildingId}`;
+    
+    try {
+      if (unitData.id) {
+        await client.models.Unit.update({
+          id: unitData.id,
+          content,
+        });
+      } else {
+        await client.models.Unit.create({
+          content,
+        });
+      }
+      alert('Unit successfully submitted!');
+      setUnitData({ unitNumber: '', floor: '', status: 'available', buildingId: '' });
+    } catch (error) {
+      console.error('Error submitting unit:', error);
+      alert('There was an error submitting the unit.');
+    }
   };
 
-  // Handle task field change
+  const handleUnitFieldChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setUnitData(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  // Handle Building Submission
+  const handleBuildingSubmit = async () => {
+    if (!buildingData.buildingName.trim() || !buildingData.address.trim()) {
+      alert('Please fill in all fields.');
+      return;
+    }
+
+    const content = `${buildingData.buildingName}|${buildingData.address}|${buildingData.towerCount}|${buildingData.floorsPerTower}|${buildingData.unitPerFloors}`;
+
+    try {
+      if (buildingData.id) {
+        await client.models.Building.update({
+          id: buildingData.id,
+          content,
+        });
+      } else {
+        await client.models.Building.create({
+          content,
+        });
+      }
+      alert('Building successfully submitted!');
+      setBuildingData({ buildingName: '', address: '', towerCount: '', floorsPerTower: '', unitPerFloors: '' });
+    } catch (error) {
+      console.error('Error submitting building:', error);
+      alert('There was an error submitting the building.');
+    }
+  };
+
   const handleBuildingFieldChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setBuildingData(prevState => ({
@@ -171,45 +188,42 @@ const handleUnitFieldChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelec
       [name]: value,
     }));
   };
-  // Create or update a user
+
+  // Handle Add User
   const handleAddUser = async () => {
     if (!formData.name.trim() || !formData.email.trim()) {
       alert('Please fill in all fields.');
       return;
     }
 
-    // Create a new Todo item representing a user
-    const content = `${formData.name}|${formData.email}|${formData.phone}|${formData.role}`; // Use a delimiter to store both name and email in content
+    const content = `${formData.name}|${formData.email}|${formData.phone}|${formData.role}`;
     if (formData.id) {
-      // Update existing user
       await client.models.User.update({ id: formData.id, content });
     } else {
-      // Create new user
       await client.models.User.create({ content });
     }
 
-    setFormData({ id: '', name: '', email: '', phone: '', role: 'tenant' }); // Reset the form
+    setFormData({ id: '', name: '', email: '', phone: '', role: 'tenant' });
     setShowModal(false);
   };
 
-  // Handle delete user
   const handleDeleteUser = async () => {
     if (formData.id) {
       await client.models.User.delete({ id: formData.id });
-      setShowModal(false); // Close the modal
+      setShowModal(false);
     }
   };
 
-  // Handle navigation
+  // Handle Navigation
   const handleNavigation = (view: string) => {
-    setCurrentView(view); // Change the current view based on the clicked link
+    setCurrentView(view);
   };
 
-  // Handle cancel
+  // Handle Cancel
   const handleCancel = () => {
-    setFormData({ id: '', name: '', email: '', phone: '', role: 'tenant' }); // Reset form
-    setShowModal(false); // Close modal
-  }; 
+    setFormData({ id: '', name: '', email: '', phone: '', role: 'tenant' });
+    setShowModal(false);
+  };
   return (
     <div className="dashboard-container">
       {/* Sidebar */}
@@ -379,7 +393,7 @@ const handleUnitFieldChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelec
                   <label className="label">Building Name</label>
                   <input
                     type="text"
-                    name="taskName"
+                    name="buildingName"
                     value={buildingData.buildingName}
                     onChange={handleBuildingFieldChange}
                     className="input"
@@ -390,8 +404,8 @@ const handleUnitFieldChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelec
                   <label className="label">Address</label>
                   <input
                     type="text"
-                    name="Address"
-                    value={buildingData.Address}
+                    name="address"
+                    value={buildingData.address}
                     onChange={handleBuildingFieldChange}
                     className="input"
                     required

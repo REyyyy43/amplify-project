@@ -43,6 +43,9 @@ interface Building {
 const TenantAdminDashboard = () => {
   const { signOut } = useAuthenticator(); // For handling user sign-out
   const [users, setUsers] = useState<User[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [building, setBuilding] = useState<Building[]>([]);
+  const [units, setUnits] = useState<Unit[]>([]);
   const [formData, setFormData] = useState<User>({ id: '', name: '', email: '', phone: '', role: 'tenant' });
   const [showModal, setShowModal] = useState(false);
   const [currentView, setCurrentView] = useState("dashboard");
@@ -71,6 +74,74 @@ const TenantAdminDashboard = () => {
     });
     return () => subscription.unsubscribe(); // Cleanup the subscription on unmount
   }, []);
+
+  useEffect(() => {
+  const subscriptionBuilding = client.models.Building.observeQuery().subscribe({
+    next: (data) => {
+      const mappedBuildings = data.items
+        .filter((item) => item.content)
+        .map((item) => {
+          const [buildingName = 'Unknown', address = 'Unknown', towerCount = 'Unknown', floorsPerTower = 'Unknown', unitPerFloors = 'Unknown'] = 
+            item.content!.split('|');
+          return { 
+            id: item.id, 
+            buildingName, 
+            address, 
+            towerCount, 
+            floorsPerTower, 
+            unitPerFloors 
+          };
+        });
+      setBuilding(mappedBuildings);
+    },
+  });
+  return () => subscriptionBuilding.unsubscribe();
+}, []);
+
+useEffect(() => {
+  const subscriptionUnits = client.models.Unit.observeQuery().subscribe({
+    next: (data) => {
+      const mappedUnits = data.items
+        .filter((item) => item.content)
+        .map((item) => {
+          const [unitName = '', floor = '', status = '', buildingId = ''] = 
+            item.content!.split('|');
+          return { 
+            id: item.id, 
+            unitName, 
+            floor, 
+            status, 
+            buildingId 
+          };
+        });
+      setUnits(mappedUnits);
+    },
+  });
+  return () => subscriptionUnits.unsubscribe();
+}, []);
+
+useEffect(() => {
+  const subscriptionTasks = client.models.Task.observeQuery().subscribe({
+    next: (data) => {
+      const mappedTasks = data.items
+        .filter((item) => item.content)
+        .map((item) => {
+          const [taskName = '', assignedTo = '', deadline = '', priority = 'normal', status = 'pending'] = 
+            item.content!.split('|');
+          return { 
+            id: item.id, 
+            taskName, 
+            assignedTo, 
+            deadline, 
+            priority, 
+            status 
+          };
+        });
+      setTasks(mappedTasks);
+    },
+  });
+  return () => subscriptionTasks.unsubscribe();
+}, []);
 
   // Handle search
   const filteredUsers = users.filter((user) => {
@@ -377,80 +448,111 @@ const TenantAdminDashboard = () => {
                   </select>
                 </div>
                 <div className="form-actions">
-                <button onClick={handleTaskSubmit}>Submit Task</button>
+                <button className='btn-submit' onClick={handleTaskSubmit}>Submit Task</button>
                 </div>
               </form>
-            </section>
-          )}
-          {currentView === "buildings" && (
-            <section className="task-management">
-              <h2 className="section-title">Building Management</h2>
-              <form onSubmit={(e) => {
-                e.preventDefault();
-                handleBuildingSubmit();
-              }}>
-                <div className="form-group">
-                  <label className="label">Building Name</label>
-                  <input
-                    type="text"
-                    name="buildingName"
-                    value={buildingData.buildingName}
-                    onChange={handleBuildingFieldChange}
-                    className="input"
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="label">Address</label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={buildingData.address}
-                    onChange={handleBuildingFieldChange}
-                    className="input"
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="label">Tower count</label>
-                  <input
-                    type="number"
-                    name="towerCount"
-                    value={buildingData.towerCount}
-                    onChange={handleBuildingFieldChange}
-                    className="input"
-                  />
-                </div>
-                <div className="form-group">
-                <label className="label">Floors per tower</label>
-                  <input
-                    type="number"
-                    name="floorsPerTower"
-                    value={buildingData.floorsPerTower}
-                    onChange={handleBuildingFieldChange}
-                    className="input"
-                  />
-                </div>
-                <div className="form-group">
-                <label className="label">Units per floor</label>
-                  <input
-                    type="number"
-                    name="unitPerFloors"
-                    value={buildingData.unitPerFloors}
-                    onChange={handleBuildingFieldChange}
-                    className="input"
-                  />
-                </div>
-                <div className="form-actions">
-                  <button type="submit" className="btn-submit">Add Building</button>
-                </div>
-              </form>
-              <div>
-                <h1>Buildings</h1>
-                    
+         <div className="tasks-list">
+        <h3>Tasks List</h3>
+        <div className="tasks-grid">
+          {tasks.map((task) => (
+            <div key={task.id} className="task-item">
+              <div className="task-header">
+                <h4>{task.taskName}</h4>
+                <span className={`priority-badge priority-${task.priority}`}>
+                  {task.priority}
+                </span>
               </div>
-            </section>
+              <div className="task-details">
+                <p><strong>Assigned to:</strong> {task.assignedTo}</p>
+                <p><strong>Deadline:</strong> {new Date(task.deadline).toLocaleDateString()}</p>
+                <p><strong>Status:</strong> <span className={`status-${task.status}`}>{task.status}</span></p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
           )}
+
+          {currentView === "buildings" && (
+  <section className="task-management">
+    <h2 className="section-title">Building Management</h2>
+    <form onSubmit={(e) => {
+      e.preventDefault();
+      handleBuildingSubmit();
+    }}>
+      <div className="form-group">
+        <label className="label">Building Name</label>
+        <input
+          type="text"
+          name="buildingName"
+          value={buildingData.buildingName}
+          onChange={handleBuildingFieldChange}
+          className="input"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label className="label">Address</label>
+        <input
+          type="text"
+          name="address"
+          value={buildingData.address}
+          onChange={handleBuildingFieldChange}
+          className="input"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label className="label">Tower count</label>
+        <input
+          type="number"
+          name="towerCount"
+          value={buildingData.towerCount}
+          onChange={handleBuildingFieldChange}
+          className="input"
+        />
+      </div>
+      <div className="form-group">
+        <label className="label">Floors per tower</label>
+        <input
+          type="number"
+          name="floorsPerTower"
+          value={buildingData.floorsPerTower}
+          onChange={handleBuildingFieldChange}
+          className="input"
+        />
+      </div>
+      <div className="form-group">
+        <label className="label">Units per floor</label>
+        <input
+          type="number"
+          name="unitPerFloors"
+          value={buildingData.unitPerFloors}
+          onChange={handleBuildingFieldChange}
+          className="input"
+        />
+      </div>
+      <div className="form-actions">
+        <button type="submit" className="btn-submit">Add Building</button>
+      </div>
+    </form>
+    <div className="buildings-list">
+      <h3>Buildings List</h3>
+      <div className="buildings-grid">
+        {building.map((building) => (
+          <div key={building.id} className="building-item">
+            <h4>{building.buildingName}</h4>
+            <p>Address: {building.address}</p>
+            <p>Towers: {building.towerCount}</p>
+            <p>Floors per Tower: {building.floorsPerTower}</p>
+            <p>Units per Floor: {building.unitPerFloors}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
         
       
   {currentView === "units" && (
@@ -496,7 +598,7 @@ const TenantAdminDashboard = () => {
                   <label className="label">Status</label>
                   <select
                     name="status"
-                    value={taskData.status}
+                    value={unitData.status}
                     onChange={handleUnitFieldChange}
                     className="input"
                   >
@@ -509,6 +611,20 @@ const TenantAdminDashboard = () => {
                 <button className='btn-submit' onClick={handleUnitSubmit}>Submit</button>
                 </div>
               </form>
+
+              <div className="units-list">
+        <h3>Units List</h3>
+        <div className="units-grid">
+          {units.map((unit) => (
+            <div key={unit.id} className="unit-item">
+              <h4>Unit {unit.unitName}</h4>
+              <p>Floor: {unit.floor}</p>
+              <p>Status: <span className={`status-${unit.status}`}>{unit.status}</span></p>
+              <p>Building ID: {unit.buildingId}</p>
+            </div>
+          ))}
+        </div>
+      </div>
             </section>
           )}
 </main>

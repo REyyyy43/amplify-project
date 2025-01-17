@@ -74,7 +74,7 @@
     color: #2d3748;
   }
   
-  .user-list {
+  .user-list .buildings-grid {
     padding: 1rem;
     background-color: white;
     border-radius: 8px;
@@ -374,3 +374,196 @@
     border-radius: 4px;
   }
   
+  .buildings-list {
+    padding: 20px;
+    background-color: #f4f7f6;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+  
+  .buildings-list h3 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+    text-align: center;
+  }
+  
+  /* Estilos para la cuadrícula de edificios */
+  .buildings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  /* Estilos para cada elemento de edificio */
+  .building-item {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .building-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Estilo para el título de cada edificio */
+  .building-item h4 {
+    font-size: 20px;
+    font-weight: 500;
+    color: #0073e6;
+    margin-bottom: 10px;
+  }
+  
+  /* Estilo para la información de cada edificio */
+  .building-item p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 5px;
+  }
+  
+  .building-item p:last-child {
+    margin-bottom: 0;
+  }
+  
+  /* Estilos adicionales para la lista cuando no hay edificios */
+  .buildings-grid.empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-size: 18px;
+    color: #999;
+  }
+
+  .units-list {
+    margin-top: 2rem;
+  }
+  
+  .units-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .unit-item {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .unit-item h4 {
+    margin: 0 0 0.5rem 0;
+    color: #333;
+  }
+  
+  .unit-item p {
+    margin: 0.25rem 0;
+    color: #666;
+  }
+  
+  .status-available {
+    color: #28a745;
+    font-weight: bold;
+  }
+  
+  .status-occupied {
+    color: #dc3545;
+    font-weight: bold;
+  }
+  
+  .status-maintenance {
+    color: #ffc107;
+    font-weight: bold;
+  }
+
+  .tasks-list {
+    margin-top: 2rem;
+  }
+  
+  .tasks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  .task-item {
+    padding: 1.25rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+  }
+  
+  .task-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  
+  .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .task-header h4 {
+    margin: 0;
+    color: #333;
+    font-size: 1.1rem;
+  }
+  
+  .task-details p {
+    margin: 0.5rem 0;
+    color: #666;
+    font-size: 0.95rem;
+  }
+  
+  .priority-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  
+  .priority-high {
+    background-color: #ffe5e5;
+    color: #dc3545;
+  }
+  
+  .priority-normal {
+    background-color: #e3f2fd;
+    color: #0d6efd;
+  }
+  
+  .priority-low {
+    background-color: #e8f5e9;
+    color: #198754;
+  }
+  
+  .status-pending {
+    color: #f59e0b;
+    font-weight: 500;
+  }
+  
+  .status-completed {
+    color: #10b981;
+    font-weight: 500;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .tasks-grid {
+      grid-template-columns: 1fr;
+    }
+  }

@@ -25,9 +25,9 @@ interface Task {
 
 interface Unit {
   id?: string;
-  unitNumber: string;
+  unitName: string;
   floor: string;
-  status: 'available' | 'occupied' | 'maintenance';
+  status: string;
   buildingId: string;
 }
 
@@ -50,7 +50,7 @@ const TenantAdminDashboard = () => {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [taskData, setTaskData] = useState<Task>({ taskName: '', assignedTo: '', deadline: '', priority: 'normal', status: 'pending' });
   const [buildingData, setBuildingData] = useState<Building>({ buildingName: '', address: '', towerCount: '', floorsPerTower: '', unitPerFloors: '' });
-  const [unitData, setUnitData] = useState<Unit>({ unitNumber: '', floor: '', status: 'available', buildingId: '' });
+  const [unitData, setUnitData] = useState<Unit>({ unitName: '', floor: '', status: '', buildingId: '' });
 
   // Fetch users on component mount
   useEffect(() => {
@@ -119,12 +119,12 @@ const TenantAdminDashboard = () => {
 
   // Handle Unit Submission
   const handleUnitSubmit = async () => {
-    if (!unitData.unitNumber.trim() || !unitData.floor.trim()) {
+    if (!unitData.unitName.trim() || !unitData.floor.trim()) {
       alert('Please fill in all fields.');
       return;
     }
 
-    const content = `${unitData.unitNumber}|${unitData.floor}|${unitData.status}|${unitData.buildingId}`;
+    const content = `${unitData.unitName}|${unitData.floor}|${unitData.status}|${unitData.buildingId}`;
     
     try {
       if (unitData.id) {
@@ -138,7 +138,7 @@ const TenantAdminDashboard = () => {
         });
       }
       alert('Unit successfully submitted!');
-      setUnitData({ unitNumber: '', floor: '', status: 'available', buildingId: '' });
+      setUnitData({ unitName: '', floor: '', status: '', buildingId: '' });
     } catch (error) {
       console.error('Error submitting unit:', error);
       alert('There was an error submitting the unit.');
@@ -426,7 +426,7 @@ const TenantAdminDashboard = () => {
                   <input
                     type="number"
                     name="floorsPerTower"
-                    value={buildingData.towerCount}
+                    value={buildingData.floorsPerTower}
                     onChange={handleBuildingFieldChange}
                     className="input"
                   />
@@ -435,18 +435,24 @@ const TenantAdminDashboard = () => {
                 <label className="label">Units per floor</label>
                   <input
                     type="number"
-                    name="unitsPerFloors"
-                    value={buildingData.towerCount}
+                    name="unitPerFloors"
+                    value={buildingData.unitPerFloors}
                     onChange={handleBuildingFieldChange}
                     className="input"
                   />
                 </div>
                 <div className="form-actions">
-                  <button type="submit" className="btn-submit">Yes</button>
+                  <button type="submit" className="btn-submit">Add Building</button>
                 </div>
               </form>
+              <div>
+                <h1>Buildings</h1>
+                    
+              </div>
             </section>
           )}
+        
+      
   {currentView === "units" && (
             <section className="task-management">
               <h2 className="section-title">Unit Management</h2>
@@ -459,7 +465,7 @@ const TenantAdminDashboard = () => {
                   <input
                     type="number"
                     name="unitName"
-                    value={unitData.unitNumber}
+                    value={unitData.unitName}
                     onChange={handleUnitFieldChange}
                     className="input"
                     required
@@ -469,7 +475,7 @@ const TenantAdminDashboard = () => {
                   <label className="label">floor:</label>
                   <input
                     type="text"
-                    name="assignedTo"
+                    name="floor"
                     value={unitData.floor}
                     onChange={handleUnitFieldChange}
                     className="input"
@@ -480,7 +486,7 @@ const TenantAdminDashboard = () => {
                   <label className="label">buildingId:</label>
                   <input
                     type="number"
-                    name="building"
+                    name="buildingId"
                     value={unitData.buildingId}
                     onChange={handleUnitFieldChange}
                     className="input"
